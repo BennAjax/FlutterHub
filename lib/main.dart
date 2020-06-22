@@ -1,149 +1,157 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-//The ShoppingListItem widget follows a common pattern for stateless widgets. It stores the values it receives in
-// its constructor in final member variables, which it then uses during its build() function. For example, the inCart
-// boolean toggles between two visual appearances: one that uses the primary color from the current theme, and another
-// that uses gray.
-//
-//When the user taps the list item, the widget doesn’t modify its inCart value directly. Instead, the widget calls the
-// onCartChanged function it received from its parent widget. This pattern lets you store state higher in the widget
-// hierarchy, which causes the state to persist for longer periods of time. In the extreme, the state stored on the widget
-// passed to runApp() persists for the lifetime of the application.
-//
-//When the parent receives the onCartChanged callback, the parent updates its internal state, which triggers the parent
-// to rebuild and create a new instance of ShoppingListItem with the new inCart value. Although the parent creates a new
-// instance of ShoppingListItem when it rebuilds, that operation is cheap because the framework compares the newly built
-// widgets with the previously built widgets and applies only the differences to the underlying RenderObject.
-
-class Product {
-  const Product({this.name});
-  final String name;
+void main() {
+  runApp(MyApp());
 }
 
-typedef void CartChangedCallback(Product product, bool inCart);
+class MyApp extends StatelessWidget {
 
-class ShoppingListItem extends StatelessWidget {
-  ShoppingListItem({this.product, this.inCart, this.onCartChanged})
-      : super(key: ObjectKey(product));
-
-  final Product product;
-  final bool inCart;
-  final CartChangedCallback onCartChanged;
-
-  Color _getColor(BuildContext context) {
-    // The theme depends on the BuildContext because different parts
-    // of the tree can have different themes.
-    // The BuildContext indicates where the build is
-    // taking place and therefore which theme to use.
-
-    return inCart ? Colors.black54 : Theme.of(context).primaryColor;
-  }
-
-  TextStyle _getTextStyle(BuildContext context) {
-    if (!inCart) return null;
-
-    return TextStyle(
-      color: Colors.black54,
-      decoration: TextDecoration.lineThrough,
-    );
-  }
-
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {
-        onCartChanged(product, inCart);
-      },
-      leading: CircleAvatar(
-        backgroundColor: _getColor(context),
-        child: Text(product.name[0]),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
+        // This makes the visual density adapt to the platform that you run
+        // the app on. For desktop platforms, the controls will be smaller and
+        // closer together (more dense) than on mobile platforms.
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      title: Text(product.name, style: _getTextStyle(context)),
+      home: HomePage('Home'),
     );
   }
 }
 
-//The ShoppingList class extends StatefulWidget, which means this widget stores mutable state. When the ShoppingList
-// widget is first inserted into the tree, the framework calls the createState() function to create a fresh instance
-// of _ShoppingListState to associate with that location in the tree. (Notice that subclasses of State are typically
-// named with leading underscores to indicate that they are private implementation details.) When this widget’s parent
-// rebuilds, the parent creates a new instance of ShoppingList, but the framework reuses the _ShoppingListState instance
-// that is already in the tree rather than calling createState again.
-//
-//To access properties of the current ShoppingList, the _ShoppingListState can use its widget property. If the parent
-// rebuilds and creates a new ShoppingList, the _ShoppingListState rebuilds with the new widget value. If you wish to
-// be notified when the widget property changes, override the didUpdateWidget() function, which is passed an oldWidget
-// to let you compare the old widget with the current widget.
-//
-//When handling the onCartChanged callback, the _ShoppingListState mutates its internal state by either adding or removing
-// a product from _shoppingCart. To signal to the framework that it changed its internal state, it wraps those calls in a
-// setState() call. Calling setState marks this widget as dirty and schedules it to be rebuilt the next time your app needs
-// to update the screen. If you forget to call setState when modifying the internal state of a widget, the framework won’t
-// know your widget is dirty and might not call the widget’s build() function, which means the user interface might not
-// update to reflect the changed state. By managing state in this way, you don’t need to write separate code for creating and
-// updating child widgets. Instead, you simply implement the build function, which handles both situations.
+class HomePage extends StatelessWidget {
+  final String title;
 
-class ShoppingList extends StatefulWidget {
-  ShoppingList({Key key, this.products}) : super(key: key);
+  HomePage(this.title);
 
-  final List<Product> products;
-
-  // The framework calls createState the first time a widget
-  // appears at a given location in the tree.
-  // If the parent rebuilds and uses the same type of
-  // widget (with the same key), the framework re-uses the State object
-  // instead of creating a new State object.
-
-  @override
-  _ShoppingListState createState() => _ShoppingListState();
-}
-
-class _ShoppingListState extends State<ShoppingList> {
-  Set<Product> _shoppingCart = Set<Product>();
-
-  void _handleCartChanged(Product product, bool inCart) {
-    setState(() {
-      // When a user changes what's in the cart, you need to change
-      // _shoppingCart inside a setState call to trigger a rebuild.
-      // The framework then calls build, below,
-      // which updates the visual appearance of the app.
-
-      if (!inCart)
-        _shoppingCart.add(product);
-      else
-        _shoppingCart.remove(product);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    Widget titleSection = Container(
+
+      padding: const EdgeInsets.all(32),
+
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(bottom: 8),
+
+                  child: Text(
+                      'Oeschinen Lake Campground',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )
+                  ),
+                ),
+                Text(
+                  'Kandersteg, Switzerland',
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Icon(
+            Icons.star,
+            color: Colors.red[500],
+          ),
+          Text('41')
+        ],
+      ),
+    );
+
+    Color color = Theme.of(context).primaryColor;
+
+    Widget buttonSection = Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildButtonColumn(color, Icons.call, 'CALL'),
+          _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
+          _buildButtonColumn(color, Icons.share, 'SHARE'),
+        ],
+      ),
+    );
+
+    Widget textSection = Container(
+      padding: const EdgeInsets.all(32),
+      child: Text(
+        'Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
+            'Alps. Situated 1,578 meters above sea level, it is one of the '
+            'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
+            'half-hour walk through pastures and pine forest, leads you to the '
+            'lake, which warms to 20 degrees Celsius in the summer. Activities '
+            'enjoyed here include rowing, and riding the summer toboggan run.',
+        softWrap: true,
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shopping List'),
+        title: Text(this.title),
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
-        children: widget.products.map((Product product) {
-          return ShoppingListItem(
-            product: product,
-            inCart: _shoppingCart.contains(product),
-            onCartChanged: _handleCartChanged,
-          );
-        }).toList(),
+        children: <Widget>[
+          Image.asset(
+            'assets/images/lake.jpg',
+            height: 200,
+            width: 240,
+            fit: BoxFit.cover,
+          ),
+          titleSection,
+          buttonSection,
+          textSection
+        ] ,
       ),
     );
   }
-}
 
-void main() {
-  runApp(MaterialApp(
-    title: 'Shopping App',
-    home: ShoppingList(
-      products: <Product>[
-        Product(name: 'Eggs'),
-        Product(name: 'Flour'),
-        Product(name: 'Chocolate chips'),
+
+
+  Column _buildButtonColumn(Color color, IconData icon, String label) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Icon(icon, color: color),
+        Container(
+          margin: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
+          ),
+        ),
       ],
-    ),
-  ));
+    );
+
+  }
+
+
+
+
+
 }
