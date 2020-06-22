@@ -1,3 +1,5 @@
+import 'dart:wasm';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -71,11 +73,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          Text('41')
+          FavouriteWidget()
         ],
       ),
     );
@@ -150,8 +148,57 @@ class HomePage extends StatelessWidget {
 
   }
 
+}
 
+class FavouriteWidget extends StatefulWidget {
+  @override
+  State<FavouriteWidget> createState() {
+    return _FavouriteWidgetState();
+  }
 
+}
 
+class _FavouriteWidgetState extends State<FavouriteWidget> {
+
+  bool _isFavourite = true;
+  int _favouriteCount = 41;
+
+  void _toggleFavorite() {
+    setState(() {
+      if (_isFavourite) {
+
+        this._isFavourite = false;
+        this._favouriteCount--;
+
+      } else {
+
+        this._isFavourite = true;
+        this._favouriteCount++;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(0),
+          child: IconButton(
+            icon: (_isFavourite ? Icon(Icons.star) : Icon(Icons.star_border)),
+            color: Colors.red[500],
+            onPressed: _toggleFavorite,
+          ),
+        ),
+        SizedBox(
+          width: 18,
+          child: Container(
+            child: Text('$_favouriteCount'),
+          ),
+        ),
+      ],
+    );
+  }
 
 }
