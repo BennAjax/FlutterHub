@@ -1,73 +1,72 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(DiceApp());
 
-class MyApp extends StatelessWidget {
+class DiceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          backgroundColor: Colors.teal,
-          body: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 50.0,
-                  backgroundImage: AssetImage('assets/images/ochuko.png'),
+      title: 'Dice App',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+        // This makes the visual density adapt to the platform that you run
+        // the app on. For desktop platforms, the controls will be smaller and
+        // closer together (more dense) than on mobile platforms.
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: DicePage()
+    );
+  }
+}
+
+class DicePage extends StatefulWidget {
+  @override
+  _DicePageState createState() => _DicePageState();
+}
+
+class _DicePageState extends State<DicePage> {
+  int leftDice = 1;
+  int rightDice = 1;
+
+  void rollDice() {
+    setState(() {
+      leftDice = Random().nextInt(6) + 1;
+      rightDice = Random().nextInt(6) + 1;
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Dicee'),
+        backgroundColor: Colors.red,
+      ),
+      backgroundColor: Colors.red,
+      body: Center(
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: FlatButton(
+                onPressed: rollDice,
+                child: Image.asset(
+                  'assets/images/dice$leftDice.png'
                 ),
-                Text(
-                  'Benn Ajax',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Pacifico'),
-                ),
-                Text(
-                  'ANDROID DEVELOPER',
-                  style: TextStyle(
-                      color: Colors.teal[100],
-                      letterSpacing: 2.5,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'SourceSansPro'),
-                ),
-                SizedBox(
-                  height: 10.0,
-                  width: 150.0,
-                  child: Divider(
-                    color: Colors.teal[100],
-                  ),
-                ),
-                Card(
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                  child: ListTile(
-                    leading: Icon(Icons.phone, color: Colors.teal),
-                    title: Text(
-                      '+234 816 202 4903',
-                      style: TextStyle(
-                        color: Colors.teal[500]
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
-                  child: ListTile(
-                    leading: Icon(Icons.email, color: Colors.teal),
-                    title: Text(
-                      'bennkeys1@gmail.com',
-                      style: TextStyle(
-                          color: Colors.teal[500]
-                      ),
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
-          )),
+            Expanded(
+              child: FlatButton(
+                onPressed: rollDice,
+                child: Image.asset(
+                    'assets/images/dice$rightDice.png'
+                ),
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }
