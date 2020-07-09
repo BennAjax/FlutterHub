@@ -1,72 +1,95 @@
-import 'dart:math';
-
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
-void main() => runApp(DiceApp());
+void main() => runApp(XylophoneApp());
 
-class DiceApp extends StatelessWidget {
+class XylophoneApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dice App',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: DicePage()
+      home: HomePage(),
     );
   }
 }
 
-class DicePage extends StatefulWidget {
-  @override
-  _DicePageState createState() => _DicePageState();
-}
+class HomePage extends StatelessWidget {
 
-class _DicePageState extends State<DicePage> {
-  int leftDice = 1;
-  int rightDice = 1;
-
-  void rollDice() {
-    setState(() {
-      leftDice = Random().nextInt(6) + 1;
-      rightDice = Random().nextInt(6) + 1;
-    });
+  void _playSound(int num) {
+    AudioCache player = new AudioCache();
+    player.play('sounds/note$num.wav');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dicee'),
-        backgroundColor: Colors.red,
-      ),
-      backgroundColor: Colors.red,
-      body: Center(
-        child: Row(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
               child: FlatButton(
-                onPressed: rollDice,
-                child: Image.asset(
-                  'assets/images/dice$leftDice.png'
-                ),
+                onPressed: () => _playSound(1),
+                color: Colors.red,
+                child: null,
+                padding: EdgeInsets.all(0.0),
               ),
             ),
             Expanded(
               child: FlatButton(
-                onPressed: rollDice,
-                child: Image.asset(
-                    'assets/images/dice$rightDice.png'
-                ),
+                onPressed: () => _playSound(2),
+                color: Colors.orange,
+                child: null,
+                padding: EdgeInsets.all(0.0),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
               ),
             ),
+            Expanded(
+              child: FlatButton(
+                onPressed: () => _playSound(3),
+                color: Colors.yellow,
+                child: null,
+                padding: EdgeInsets.all(0.0),
+              ),
+            ),
+            Expanded(
+              child: FlatButton(
+                onPressed: () => _playSound(4),
+                color: Colors.green,
+                child: null,
+                padding: EdgeInsets.all(0.0),
+              ),
+            ),
+            Expanded(
+              child: FlatButton(
+                onPressed: () => _playSound(5),
+                color: Colors.teal,
+                child: null,
+                padding: EdgeInsets.all(0.0),
+              ),
+            ),
+            Expanded(
+              child: FlatButton(
+                onPressed: () => _playSound(6),
+                color: Colors.blue,
+                child: null,
+                padding: EdgeInsets.all(0.0),
+              ),
+            ),
+            Expanded(
+              child: FlatButton(
+                onPressed: () => _playSound(7),
+                color: Colors.purple,
+                child: null,
+                padding: EdgeInsets.all(0.0),
+              ),
+            )
           ],
         ),
-      )
+      ),
     );
   }
 }
+
