@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:workspace/screens/loginScreen.dart';
+import 'package:workspace/screens/ShopScreen.dart';
+
 
 void main() => runApp(FlutterHubApp());
 
@@ -9,7 +10,7 @@ class FlutterHubApp extends StatelessWidget {
     return MaterialApp(
       title: 'FlutterHub',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: ShopScreen(),
     );
   }
 }
